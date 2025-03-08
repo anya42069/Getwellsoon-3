@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Well Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    /* Inline CSS */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ff6f61, #6b5b95, #000);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Pacifico', cursive;
+    }
+    .container {
+      text-align: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .flower-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .flower {
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, #ff9999 30%, #ff6666 70%);
+      border-radius: 50%;
+      position: relative;
+      animation: float 3s ease-in-out infinite;
+    }
+    .flower::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      background: #ffff00;
+      border-radius: 50%;
+    }
+    .flower:nth-child(1) { animation-delay: 0s; }
+    .flower:nth-child(2) { animation-delay: 1s; }
+    .flower:nth-child(3) { animation-delay: 2s; }
+    
+    /* Background Blooming Flowers */
+    .background-flowers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .blooming-flower {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ff6666;
+      opacity: 0;
+      animation: bloom 8s linear infinite;
+    }
+    
+    /* Create petals for blooming flowers */
+    .blooming-flower::before,
+    .blooming-flower::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: inherit;
+    }
+    
+    .blooming-flower::before {
+      top: -100%;
+      left: 0;
+    }
+    
+    .blooming-flower::after {
+      top: 0;
+      left: -100%;
+    }
+    
+    .blooming-flower .petal-1,
+    .blooming-flower .petal-2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: inherit;
+    }
+    
+    .blooming-flower .petal-1 {
+      top: 0;
+      left: 100%;
+    }
+    
+    .blooming-flower .petal-2 {
+      top: 100%;
+      left: 0;
+    }
+    
+    @keyframes bloom {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      20% {
+        transform: scale(1);
+        opacity: 0.7;
+      }
+      80% {
+        transform: scale(5);
+        opacity: 0.3;
+      }
+      100% {
+        transform: scale(7);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: #fff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .hidden {
+      display: none;
+    }
+    .youtube-container {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Background Blooming Flowers -->
+    <div class="background-flowers" id="background-flowers"></div>
+    
+    <div class="flower-animation" id="flower-animation">
+      <!-- Simple CSS flowers instead of pixelated image -->
+      <div class="flower"></div>
+      <div class="flower"></div>
+      <div class="flower"></div>
+    </div>
+    <div class="message hidden" id="message">
+      <h1>Get Well Soon!</h1>
+    </div>
+  </div>
+  
+  <!-- YouTube Audio - Positioned middle left -->
+  <div class="youtube-container">
+    <iframe id="youtube-iframe" width="300" height="169" src="https://www.youtube.com/embed/HfWLgELllZs?autoplay=1&controls=1&loop=1&playlist=HfWLgELllZs&mute=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  
+  <script>
+    // Inline JavaScript
+    const flowerAnimation = document.getElementById('flower-animation');
+    const message = document.getElementById('message');
+    const backgroundFlowers = document.getElementById('background-flowers');
+    
+    // Create background blooming flowers
+    function createBloomingFlowers() {
+      // Clear existing flowers
+      backgroundFlowers.innerHTML = '';
+      
+      // Create 20 blooming flowers
+      for (let i = 0; i < 20; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'blooming-flower';
+        
+        // Add petals
+        const petal1 = document.createElement('div');
+        petal1.className = 'petal-1';
+        flower.appendChild(petal1);
+        
+        const petal2 = document.createElement('div');
+        petal2.className = 'petal-2';
+        flower.appendChild(petal2);
+        
+        // Random position
+        flower.style.left = Math.random() * 100 + '%';
+        flower.style.top = Math.random() * 100 + '%';
+        
+        // Random delay
+        flower.style.animationDelay = Math.random() * 8 + 's';
+        
+        // Random color
+        const colors = ['#ff6666', '#ffcccc', '#99ff99', '#ffff99', '#9999ff', '#ff99ff'];
+        flower.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        backgroundFlowers.appendChild(flower);
+      }
+    }
+    
+    // Create initial set of flowers
+    createBloomingFlowers();
+    
+    // Create new flowers periodically
+    setInterval(createBloomingFlowers, 8000);
+    
+    // Show the message after 5 seconds
+    setTimeout(() => {
+      flowerAnimation.classList.add('hidden');
+      message.classList.remove('hidden');
+    }, 5000);
+    
+    // Make sure audio is playing
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframe = document.getElementById('youtube-iframe');
+      // Force reload the iframe to ensure autoplay works
+      iframe.src = iframe.src;
+    });
+  </script>
+</body>
+</html>
